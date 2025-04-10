@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Washing Machine Repair Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #004080;
+        }
+
+        form label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        form select, form textarea, form button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+        }
+
+        form button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #004080;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #004080;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #004080;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>QuickFix Appliance Repairs</h1>
+        <p>Washing Machine Repair Booking</p>
+    </header>
+
+    <div class="container">
+        <h2>Washing Machine Repair</h2>
+        <form id="washingMachineForm" action="thank.html" method="get">
+
+            <label for="brand">Washing Machine Brand:</label>
+            <select id="brand" name="brand" required>
+                <option value="">--Select Brand--</option>
+                <option>LG</option>
+                <option>Samsung</option>
+                <option>Whirlpool</option>
+                <option>IFB</option>
+                <option>Bosch</option>
+                <option>Haier</option>
+                <option>Godrej</option>
+                <option>Panasonic</option>
+                <option>Videocon</option>
+                <option>Other</option>
+            </select>
+
+            <label for="issue">Select Issue:</label>
+            <select id="issue" name="issue" required>
+                <option value="">--Select Issue--</option>
+                <option>Not Spinning</option>
+                <option>Water Not Draining</option>
+                <option>Leaking Water</option>
+                <option>Not Starting</option>
+                <option>Unusual Noise</option>
+                <option>Drum Not Rotating</option>
+                <option>Vibration Issue</option>
+                <option>Display Panel Error</option>
+                <option>Other</option>
+            </select>
+
+            <label>Warranty Status:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="warranty" value="In Warranty" required> In Warranty</label>
+                <label><input type="radio" name="warranty" value="Out of Warranty" required> Out of Warranty</label>
+            </div>
+
+            <label for="age">Age of Product:</label>
+            <select id="age" name="age" required>
+                <option value="">--Select Age--</option>
+                <option>Less than 3 years</option>
+                <option>More than 3 years</option>
+                <option>I am not sure</option>
+            </select>
+
+            <p class="note">Service Charge: ₹350</p>
+
+            <button type="submit">Book Service</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>🚫 Disclaimer: We are an independent service provider and are not authorized associate partners from any brands. Local repair vendors perform all service calls and repairs (note we don’t hold any authorization of any brand).</p>
+        <p>© Copyright: All products are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation/endorsement by them with us.</p>
+    </footer>
+</body>
+</html>

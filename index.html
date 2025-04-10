@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickFix Appliance Repairs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e6f2ff;
+      color: #333;
+    }
+
+    header {
+      background-color: #004080;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #0066cc;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      gap: 15px;
+    }
+
+    nav a, .dropbtn {
+      color: #fff;
+      padding: 10px 15px;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #0066cc;
+      top: 100%;
+      left: 0;
+      z-index: 1;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .dropdown-content a {
+      color: white;
+      padding: 10px 15px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #004080;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+        max-width: 1200px;
+        margin: auto;
+      }
+    }
+
+    .services-section, .form-section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .services-section {
+      flex: 2;
+    }
+
+    .form-section {
+      flex: 1;
+    }
+
+    form input, form textarea, form select, form button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    form button {
+      background-color: #0066cc;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #004080;
+    }
+
+    footer {
+      background-color: #004080;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 20px;
+    }
+
+    .location-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .location-btn:hover {
+      background-color: #218838;
+    }
+
+    .mobile-only {
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+      .form-section.desktop-only {
+        display: none;
+      }
+
+      .mobile-only {
+        display: block;
+      }
+    }
+
+    .highlight {
+      outline: 3px solid #ffcc00;
+      transition: outline 1s ease-in-out;
+    }
+
+    .service-card {
+      background: #f9f9f9;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .service-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>QuickFix Appliance Repairs</h1>
+    <p>Fast & Reliable Home Appliance Repair Services</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <div class="dropdown">
+      <a class="dropbtn">Services</a>
+      <div class="dropdown-content" id="service-links"></div>
+    </div>
+    <a href="#contact">Contact</a>
+    <a href="#about">About Us</a>
+  </nav>
+
+  <!-- rest of the document remains unchanged -->
+
+  <div class="container">
+    <div class="form-section desktop-only" id="book-service">
+      <h2>Book a Service</h2>
+      <form id="bookingForm">
+        <label for="service">Service Type:</label>
+        <select id="service" name="service"></select>
+
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <label for="address">Service Address:</label>
+        <textarea id="address" name="address" rows="3" required></textarea>
+        <button type="button" class="location-btn" onclick="fillLocation('address')">Use Current Location</button>
+
+        <label for="preferred-date">Preferred Service Date:</label>
+        <input type="date" id="preferred-date" name="preferred-date" required>
+
+        <label for="additional">Additional Notes:</label>
+        <textarea id="additional" name="additional" rows="3" placeholder="Describe the problem..."></textarea>
+
+        <button type="submit">Book Now</button>
+      </form>
+    </div>
+
+    <div class="services-section" id="services">
+      <h2>Our Services</h2>
+      <div id="services-list"></div>
+
+      <div class="form-section mobile-only" id="book-service-mobile">
+        <h2>Book a Service</h2>
+        <form id="bookingFormMobile">
+          <select id="service-mobile" name="service"></select>
+          <input type="text" id="name-mobile" placeholder="Full Name" required>
+          <input type="email" id="email-mobile" placeholder="Email Address" required>
+          <input type="text" id="phone-mobile" placeholder="Phone Number" required>
+          <textarea id="address-mobile" placeholder="Service Address" rows="3" required></textarea>
+          <button type="button" class="location-btn" onclick="fillLocation('address-mobile')">Use Current Location</button>
+          <input type="date" id="preferred-date-mobile" required>
+          <textarea id="additional-mobile" placeholder="Additional Notes" rows="3"></textarea>
+          <button type="submit">Book Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="contact">
+    <div class="services-section">
+      <h2>📞 Contact Info</h2>
+      <p><strong>Email:</strong> support@quickfixrepair.com</p>
+      <p><strong>Phone:</strong> <a href="tel:+917795452556" id="phone-link">+91 7795452556</a></p>
+      <button onclick="window.location.href='tel:+917795452556'" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px;">
+        📲 Call Now
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    <p>🚫 Disclaimer: We are an independent service provider and not authorized by any appliance brands.</p>
+    <p>© All product names are trademarks™ or registered® trademarks of their respective holders.</p>
+  </footer>
+
+  <script>
+    const serviceData = [
+      { id: "fridge", title: "🧊 Refrigerator Repair", description: "Efficient fridge repair to keep your food fresh." },
+      { id: "washing", title: "🧺 Washing Machine Repair", description: "We fix all washing machine issues." },
+      { id: "microwave", title: "🍲 Microwave Repair", description: "Get your microwave working like new again." }
+    ];
+
+    const servicesList = document.getElementById("services-list");
+    const selectDesktop = document.getElementById("service");
+    const selectMobile = document.getElementById("service-mobile");
+    const dropdownLinks = document.getElementById("service-links");
+
+    serviceData.forEach(service => {
+      const div = document.createElement("div");
+      div.className = "service-card";
+      div.innerHTML = `<h3>${service.title}</h3><p>${service.description}</p>`;
+      servicesList.appendChild(div);
+
+      [selectDesktop, selectMobile].forEach(select => {
+        const opt = document.createElement("option");
+        opt.value = service.id;
+        opt.textContent = service.title.replace(/^.*?\s/, '');
+        select.appendChild(opt);
+      });
+
+      const link = document.createElement("a");
+      link.textContent = service.title.replace(/^.*?\s/, '');
+      link.href = "#book-service";
+      link.onclick = e => {
+        e.preventDefault();
+        const isMobile = window.innerWidth < 768;
+        const selectEl = isMobile ? selectMobile : selectDesktop;
+        selectEl.value = service.id;
+        document.getElementById(isMobile ? "book-service-mobile" : "book-service").scrollIntoView({ behavior: "smooth" });
+      };
+      dropdownLinks.appendChild(link);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll(".service-card").forEach(card => observer.observe(card));
+
+    function handleBooking(formData) {
+      const existing = JSON.parse(localStorage.getItem("bookings") || "[]");
+      existing.push(formData);
+      localStorage.setItem("bookings", JSON.stringify(existing));
+    }
+
+    function redirectToPage(serviceId) {
+      const pages = {
+        fridge: 'fridge.html',
+        washing: 'washing.html',
+        microwave: 'micro.html'
+      };
+      const targetPage = pages[serviceId] || 'index.html';
+      window.location.href = targetPage;
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const form = e.target;
+      const serviceId = form.service.value;
+      handleBooking({
+        service: serviceId,
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        address: form.address.value,
+        date: form["preferred-date"].value,
+        notes: form.additional.value
+      });
+      form.reset();
+      redirectToPage(serviceId);
+    });
+
+    document.getElementById("bookingFormMobile").addEventListener("submit", e => {
+      e.preventDefault();
+      const form = e.target;
+      const serviceId = form["service-mobile"].value;
+      handleBooking({
+        service: serviceId,
+        name: form["name-mobile"].value,
+        email: form["email-mobile"].value,
+        phone: form["phone-mobile"].value,
+        address: form["address-mobile"].value,
+        date: form["preferred-date-mobile"].value,
+        notes: form["additional-mobile"].value
+      });
+      form.reset();
+      redirectToPage(serviceId);
+    });
+
+    function fillLocation(fieldId) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const url = `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`;
+          document.getElementById(fieldId).value = url;
+        }, () => alert("Location fetch failed"));
+      } else {
+        alert("Geolocation not supported by your browser.");
+      }
+    }
+  </script>
+</body>
+</html>
