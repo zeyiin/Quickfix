@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QuickFix Appliance Repairs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -145,17 +146,6 @@
     }
 
     @media (max-width: 767px) {
-      nav {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      nav a, .dropbtn {
-        width: 100%;
-        text-align: center;
-        padding: 12px 0;
-      }
-
       .form-section.desktop-only {
         display: none;
       }
@@ -163,11 +153,6 @@
       .mobile-only {
         display: block;
       }
-    }
-
-    .highlight {
-      outline: 3px solid #ffcc00;
-      transition: outline 1s ease-in-out;
     }
 
     .service-card {
@@ -184,6 +169,25 @@
     .service-card.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .service-card button {
+      background-color: #004080;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .service-card button:hover {
+      background-color: #00264d;
+    }
+
+    .extra-details {
+      margin-top: 10px;
+      display: none;
     }
   </style>
 </head>
@@ -206,7 +210,8 @@
   <div class="container">
     <div class="form-section desktop-only" id="book-service">
       <h2>Book a Service</h2>
-      <form id="bookingForm">
+      <form id="bookingForm" action="https://formsubmit.co/mohammedzain0305@gmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false">
         <label for="service">Service Type:</label>
         <select id="service" name="service"></select>
 
@@ -239,15 +244,16 @@
 
       <div class="form-section mobile-only" id="book-service-mobile">
         <h2>Book a Service</h2>
-        <form id="bookingFormMobile">
+        <form id="bookingFormMobile" action="https://formsubmit.co/mohammedzain0305@gmail.com" method="POST">
+          <input type="hidden" name="_captcha" value="false">
           <select id="service-mobile" name="service"></select>
-          <input type="text" id="name-mobile" placeholder="Full Name" required>
-          <input type="email" id="email-mobile" placeholder="Email Address" required>
-          <input type="text" id="phone-mobile" placeholder="Phone Number" required>
-          <textarea id="address-mobile" placeholder="Service Address" rows="3" required></textarea>
+          <input type="text" id="name-mobile" name="name" placeholder="Full Name" required>
+          <input type="email" id="email-mobile" name="email" placeholder="Email Address" required>
+          <input type="text" id="phone-mobile" name="phone" placeholder="Phone Number" required>
+          <textarea id="address-mobile" name="address" placeholder="Service Address" rows="3" required></textarea>
           <button type="button" class="location-btn" onclick="fillLocation('address-mobile')">Use Current Location</button>
-          <input type="date" id="preferred-date-mobile" required>
-          <textarea id="additional-mobile" placeholder="Additional Notes" rows="3"></textarea>
+          <input type="date" id="preferred-date-mobile" name="preferred-date" required>
+          <textarea id="additional-mobile" name="additional" placeholder="Additional Notes" rows="3"></textarea>
           <button type="submit">Book Now</button>
         </form>
       </div>
@@ -272,9 +278,27 @@
 
   <script>
     const serviceData = [
-      { id: "fridge", title: "🧊 Refrigerator Repair", description: "Efficient fridge repair to keep your food fresh." },
-      { id: "washing", title: "🧺 Washing Machine Repair", description: "We fix all washing machine issues." },
-      { id: "microwave", title: "🍲 Microwave Repair", description: "Get your microwave working like new again." }
+      {
+        id: "fridge",
+        title: "🧊 Refrigerator Repair",
+        description: "Efficient fridge repair to keep your food fresh.",
+        details: "We handle all refrigerator issues including compressor faults, cooling problems, and gas refills.",
+        icon: "fas fa-snowflake"
+      },
+      {
+        id: "washing",
+        title: "🧺 Washing Machine Repair",
+        description: "We fix all washing machine issues.",
+        details: "Top-load, front-load or semi-automatic – we service all types, replace faulty parts, and handle water drain issues.",
+        icon: "fas fa-water"
+      },
+      {
+        id: "microwave",
+        title: "🍲 Microwave Repair",
+        description: "Get your microwave working like new again.",
+        details: "Door switch issues, plate rotation, power failure, or sparking – we’ve got it covered.",
+        icon: "fas fa-microwave"
+      }
     ];
 
     const servicesList = document.getElementById("services-list");
@@ -285,7 +309,12 @@
     serviceData.forEach(service => {
       const div = document.createElement("div");
       div.className = "service-card";
-      div.innerHTML = `<h3>${service.title}</h3><p>${service.description}</p>`;
+      div.innerHTML = `
+        <h3><i class="${service.icon}" style="margin-right:8px;"></i>${service.title}</h3>
+        <p>${service.description}</p>
+        <button onclick="toggleDetails(this)">More Info</button>
+        <div class="extra-details"><p>${service.details}</p></div>
+      `;
       servicesList.appendChild(div);
 
       [selectDesktop, selectMobile].forEach(select => {
@@ -308,6 +337,13 @@
       dropdownLinks.appendChild(link);
     });
 
+    function toggleDetails(button) {
+      const details = button.nextElementSibling;
+      const isVisible = details.style.display === "block";
+      details.style.display = isVisible ? "none" : "block";
+      button.textContent = isVisible ? "More Info" : "Less Info";
+    }
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add("visible");
@@ -315,56 +351,6 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll(".service-card").forEach(card => observer.observe(card));
-
-    function handleBooking(formData) {
-      const existing = JSON.parse(localStorage.getItem("bookings") || "[]");
-      existing.push(formData);
-      localStorage.setItem("bookings", JSON.stringify(existing));
-    }
-
-    function redirectToPage(serviceId) {
-      const pages = {
-        fridge: 'fridge.html',
-        washing: 'washing.html',
-        microwave: 'micro.html'
-      };
-      const targetPage = pages[serviceId] || 'index.html';
-      window.location.href = targetPage;
-    }
-
-    document.getElementById("bookingForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const form = e.target;
-      const serviceId = form.service.value;
-      handleBooking({
-        service: serviceId,
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        address: form.address.value,
-        date: form["preferred-date"].value,
-        notes: form.additional.value
-      });
-      form.reset();
-      redirectToPage(serviceId);
-    });
-
-    document.getElementById("bookingFormMobile").addEventListener("submit", e => {
-      e.preventDefault();
-      const form = e.target;
-      const serviceId = form["service-mobile"].value;
-      handleBooking({
-        service: serviceId,
-        name: form["name-mobile"].value,
-        email: form["email-mobile"].value,
-        phone: form["phone-mobile"].value,
-        address: form["address-mobile"].value,
-        date: form["preferred-date-mobile"].value,
-        notes: form["additional-mobile"].value
-      });
-      form.reset();
-      redirectToPage(serviceId);
-    });
 
     function fillLocation(fieldId) {
       if (navigator.geolocation) {
