@@ -145,6 +145,17 @@
     }
 
     @media (max-width: 767px) {
+      nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      nav a, .dropbtn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+      }
+
       .form-section.desktop-only {
         display: none;
       }
@@ -191,8 +202,6 @@
     <a href="#contact">Contact</a>
     <a href="about.html">About Us</a>
   </nav>
-
-  <!-- rest of the document remains unchanged -->
 
   <div class="container">
     <div class="form-section desktop-only" id="book-service">
